@@ -29,7 +29,7 @@ version = '0.0.1-SNAPSHOT'
 description = 'shopping-app'
 sourceCompatibility = '11'
 
-def user = 'dwalke30'
+def user = 'bboris1'
 
 bootJar {
     mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
