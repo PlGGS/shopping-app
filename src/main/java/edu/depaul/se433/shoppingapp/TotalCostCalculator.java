@@ -19,7 +19,7 @@ public class TotalCostCalculator {
     double costWithShipping = initialCost + shippingCost;
     double tax = TaxCalculator.calculate(costWithShipping, state);
     double total = initialCost + tax + shippingCost;
-    return  new Bill(initialCost,shippingCost,tax, total);
+    return new Bill(initialCost,shippingCost,tax, total);
   }
 
   public static double calculate(double initialCost, String state, ShippingType shipping) {
