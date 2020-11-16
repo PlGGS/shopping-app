@@ -95,6 +95,18 @@ public class TotalCostCalculatorTest {
     assertEquals(cart.itemCount(), 2);
   }
 
+  @Test
+  @DisplayName("Makes sure that carts with distinct, separate items have the proper count")
+  void clearsItems() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem(new PurchaseItem("Shirt", shirtPrice, 1));
+    cart.addItem(new PurchaseItem("Fancy Shirt", fancyShirtPrice, 1));
+
+    assertEquals(cart.itemCount(), 2);
+    cart.clear();
+    assertEquals(cart.itemCount(), 0);
+  }
+
   //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
 
   @Test

@@ -41,12 +41,6 @@ public class ShoppingCartApiTest {
     }
 
     @Test
-    @DisplayName("Makes sure that ShoppingCartApi.getCart() actually returns its cart")
-    void getsCart() {
-        assertEquals(cartAPI.shoppingCart, cartAPI.getCart());
-    }
-
-    @Test
     @DisplayName("Makes sure that totals calculated directly through TotalCostCalculator and totals calculated through the ShoppingCartAPI are the same")
     void equalTotals() {
         ShoppingCart directCart = new ShoppingCart();
@@ -99,5 +93,13 @@ public class ShoppingCartApiTest {
         cartAPI.purchaseAgent = apiAgent;
 
         assertEquals(directAgent.averagePurchase(), cartAPI.getAvergaPurchase());
+    }
+
+    //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
+
+    @Test
+    @DisplayName("Makes sure that ShoppingCartApi.getCart() actually returns its cart")
+    void getsCart() {
+        assertEquals(cartAPI.shoppingCart, cartAPI.getCart());
     }
 }
