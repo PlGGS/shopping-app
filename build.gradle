@@ -5,7 +5,7 @@ plugins {
     id 'org.springframework.boot' version '2.3.3.RELEASE'
 }
 
-group = 'edu.depail.se433'
+group = 'edu.depaul.se433'
 version = '0.0.1-SNAPSHOT'
 description = 'shopping-app'
 sourceCompatibility = 1.11
@@ -31,8 +31,8 @@ dependencies {
 
 def user = 'bboris1'
 
-task cukesTest(type: Test) {
-    include "edu/depaul/se433/shoppingapp/TestRunner*"
+bootJar {
+    mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
 }
 
 configurations {
@@ -42,7 +42,6 @@ configurations {
 }
 
 task cucumber() {
-    dependsOn assemble, compileTestJava
     doLast {
         javaexec {
             main = "io.cucumber.core.cli.Main"
@@ -50,17 +49,16 @@ task cucumber() {
             args = ['--plugin', 'pretty', '--glue', "edu/depaul/se433/shoppingapp", 'src/test/resources']
         }
     }
+//    finalizedBy jacocoTestReport
 }
 
 test {
-    dependsOn cukesTest
-    useJUnitPlatform()
     ignoreFailures(true)
+    useJUnitPlatform()
     afterTest { desc, result ->
         logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
     }
-    finalizedBy cucumber
-//    finalizedBy cucumber, jacocoTestReport
+    finalizedBy cucumber, jacocoTestReport
 }
 
 task packageDistribution(type: Zip) {
@@ -74,32 +72,29 @@ task packageDistribution(type: Zip) {
         include "gradlew"
         include "gradlew.bat"
         include "settings.gradle"
+        include "build/reports/**/*"
     }
 
     into("${user}-${rootProject.name}")
 }
 
 check {
-//    dependsOn {
-//        jacocoTestCoverageVerification
-//    }
+    dependsOn {
+        jacocoTestCoverageVerification
+    }
     finalizedBy packageDistribution
 }
 
-//jacocoTestReport {
-//    dependsOn test
-//}
+jacocoTestReport {
+    dependsOn test
+}
 
-//jacocoTestCoverageVerification {
-//    violationRules {
-//        rule {
-//            limit {
-//                minimum = 0.8
-//            }
-//        }
-//    }
-//}
-
-bootJar {
-    mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8 //TODO change back to 0.8
+            }
+        }
+    }
 }
