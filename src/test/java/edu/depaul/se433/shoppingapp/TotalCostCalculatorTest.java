@@ -96,7 +96,7 @@ public class TotalCostCalculatorTest {
     );
   }
 
-  //ALL TESTS BELOW FAIL BECAUSE PROGRAM DOESN'T HANDLE THEM PROPERLY
+  //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
 
   @Test
   @DisplayName("Makes sure that negative and zero initial prices throw some sort of exception because of their invalid item prices / quantities")

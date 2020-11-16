@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.OptionalDouble;
 
 /**
- * The Purchase agent uses aPurchaseDBO to save and retrieve purchase information.
+ * The Purchase agent uses a PurchaseDBO to save and retrieve purchase information.
  * The business logic should be in this class while the details of database connections
  * etc. should be in PurchaseDBO
  */
