@@ -49,7 +49,6 @@ task cucumber() {
             args = ['--plugin', 'pretty', '--glue', "edu/depaul/se433/shoppingapp", 'src/test/resources']
         }
     }
-//    finalizedBy jacocoTestReport
 }
 
 test {

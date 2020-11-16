@@ -66,8 +66,6 @@ class PurchaseAgentTest {
     @Test
     @DisplayName("Makes sure that PurchaseAgent properly calls its own getPurchases() function to catch JbdiExceptions thrown by its PurchaseDBO's getPurchases() function")
     void handlesJbdiException() {
-        List<Purchase> purchaseList = new ArrayList<>();
-
         PurchaseDBO mockDBO = mock(PurchaseDBO.class);
         when(mockDBO.getPurchases()).thenThrow(JdbiException.class);
 

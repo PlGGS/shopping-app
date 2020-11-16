@@ -44,7 +44,7 @@ public class ShoppingCartApi {
       @RequestParam(value="state") String state,
       @RequestParam(value="shipping") String shipping) {
     Bill bill = TotalCostCalculator.calculate(shoppingCart,state, ShippingType.valueOf(shipping));
-    purchaseAgent.save(Purchase.make(name, LocalDate.now(), bill.total(), state, shipping));
+    purchaseAgent.save(Purchase.make(name, LocalDate.now(), bill.getTotal(), state, shipping));
     shoppingCart.clear();
     return "ok";
   }

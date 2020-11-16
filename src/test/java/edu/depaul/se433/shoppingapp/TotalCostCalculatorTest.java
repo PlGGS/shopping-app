@@ -96,10 +96,20 @@ public class TotalCostCalculatorTest {
     );
   }
 
+  @Test
+  @DisplayName("Makes sure that carts with distinct, separate items have the proper count")
+  void validItemCountCart() {
+    ShoppingCart cart = new ShoppingCart();
+    cart.addItem(new PurchaseItem("Shirt", shirtPrice, 1));
+    cart.addItem(new PurchaseItem("Fancy Shirt", fancyShirtPrice, 1));
+
+    assertTrue(cart.itemCount() == 2);
+  }
+
   //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
 
   @Test
-  @DisplayName("Makes sure that negative and zero initial prices throw some sort of exception because of their invalid item prices / quantities")
+  @DisplayName("Makes sure that negative and zero item prices within carts throw some sort of exception because of their invalid item prices / quantities")
   void invalidCartTotals() {
     ShoppingCart emptyCart = new ShoppingCart();
 

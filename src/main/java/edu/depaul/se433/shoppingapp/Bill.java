@@ -46,7 +46,9 @@ public class Bill {
     this.total = Precision.round(total, 2);
   }
 
-  public double total() {
-    return total;
-  }
+  ///This function should not exist, because there is already a getTotal() function on line 33
+  ///I'm removing this, because it lowers code coverage for no reason
+//  public double total() {
+//    return total;
+//  }
 }
