@@ -1,16 +1,9 @@
 package edu.depaul.se433.shoppingapp;
 
 import org.apache.commons.math3.util.Precision;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.LocalDate;
-import java.util.Map;
-
-import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,10 +12,6 @@ public class TotalCostCalculatorTest {
   public static double shirtPrice = 15.99;
   public static double negativeShirtPrice = -shirtPrice;
   public static double fancyShirtPrice = 25.99;
-
-//  @BeforeEach
-//  void setup() {
-//  }
 
   @Test
   @DisplayName("Makes sure the following totals are valid")
@@ -103,7 +92,7 @@ public class TotalCostCalculatorTest {
     cart.addItem(new PurchaseItem("Shirt", shirtPrice, 1));
     cart.addItem(new PurchaseItem("Fancy Shirt", fancyShirtPrice, 1));
 
-    assertTrue(cart.itemCount() == 2);
+    assertEquals(cart.itemCount(), 2);
   }
 
   //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
@@ -139,16 +128,20 @@ public class TotalCostCalculatorTest {
   @DisplayName("Makes sure that calculating totals with initial prices vs carts are the same")
   void equalTotals() {
     ShoppingCart oneShirtCart = new ShoppingCart();
-    oneShirtCart.addItem(new PurchaseItem("Fancy Shirt", fancyShirtPrice, 1));
+    PurchaseItem fancyShirt = new PurchaseItem("Fancy Shirt", fancyShirtPrice, 1);
+
+    oneShirtCart.addItem(fancyShirt);
 
     ShoppingCart twoShirtsCart = new ShoppingCart();
-    twoShirtsCart.addItem(new PurchaseItem("Fancy Shirt", fancyShirtPrice, 2));
+    PurchaseItem twoFancyShirts = new PurchaseItem("Fancy Shirt", fancyShirtPrice, 2);
+
+    twoShirtsCart.addItem(twoFancyShirts);
 
     assertAll(
-      () -> assertEquals(TotalCostCalculator.calculate(fancyShirtPrice, "IL", ShippingType.STANDARD), TotalCostCalculator.calculate(oneShirtCart, "IL", ShippingType.STANDARD).getTotal()),
-      () -> assertEquals(TotalCostCalculator.calculate(fancyShirtPrice, "IL", ShippingType.NEXT_DAY), TotalCostCalculator.calculate(oneShirtCart, "IL", ShippingType.NEXT_DAY).getTotal()),
-      () -> assertEquals(TotalCostCalculator.calculate(fancyShirtPrice * 2, "IL", ShippingType.STANDARD), TotalCostCalculator.calculate(twoShirtsCart, "IL", ShippingType.STANDARD).getTotal()),
-      () -> assertEquals(TotalCostCalculator.calculate(fancyShirtPrice * 2, "IL", ShippingType.NEXT_DAY), TotalCostCalculator.calculate(twoShirtsCart, "IL", ShippingType.NEXT_DAY).getTotal())
+      () -> assertEquals(TotalCostCalculator.calculate(fancyShirt.getUnitPrice(), "IL", ShippingType.STANDARD), TotalCostCalculator.calculate(oneShirtCart, "IL", ShippingType.STANDARD).getTotal()),
+      () -> assertEquals(TotalCostCalculator.calculate(fancyShirt.getUnitPrice(), "IL", ShippingType.NEXT_DAY), TotalCostCalculator.calculate(oneShirtCart, "IL", ShippingType.NEXT_DAY).getTotal()),
+      () -> assertEquals(TotalCostCalculator.calculate(twoFancyShirts.value(), "IL", ShippingType.STANDARD), TotalCostCalculator.calculate(twoShirtsCart, "IL", ShippingType.STANDARD).getTotal()),
+      () -> assertEquals(TotalCostCalculator.calculate(twoFancyShirts.value(), "IL", ShippingType.NEXT_DAY), TotalCostCalculator.calculate(twoShirtsCart, "IL", ShippingType.NEXT_DAY).getTotal())
     );
   }
 
@@ -156,13 +149,14 @@ public class TotalCostCalculatorTest {
   @DisplayName("Makes sure that invalid states throw some sort of exception")
   void invalidStates() {
     ShoppingCart cart = new ShoppingCart();
-    cart.addItem(new PurchaseItem("Shirt", shirtPrice, 1));
+    PurchaseItem shirt = new PurchaseItem("Shirt", shirtPrice, 1);
+    cart.addItem(shirt);
 
     assertAll(
       () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(cart, "invalid", ShippingType.STANDARD)),
       () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(cart, "invalid", ShippingType.NEXT_DAY)),
-      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirtPrice, "invalid", ShippingType.STANDARD)),
-      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirtPrice, "invalid", ShippingType.NEXT_DAY))
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirt.getUnitPrice(), "invalid", ShippingType.STANDARD)),
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirt.getUnitPrice(), "invalid", ShippingType.NEXT_DAY))
     );
   }
 }
