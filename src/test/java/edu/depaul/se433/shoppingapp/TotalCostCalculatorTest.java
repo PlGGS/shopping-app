@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TotalCostCalculatorTest {
-  double shirtPrice = 15.99;
-  double negativeShirtPrice = -shirtPrice;
-  double fancyShirtPrice = 25.99;
+  public static double shirtPrice = 15.99;
+  public static double negativeShirtPrice = -shirtPrice;
+  public static double fancyShirtPrice = 25.99;
 
 //  @BeforeEach
 //  void setup() {

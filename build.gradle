@@ -1,29 +1,14 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'jacoco'
     id "io.freefair.lombok" version "5.1.0"
     id 'org.springframework.boot' version '2.3.3.RELEASE'
 }
 
-test {
-    ignoreFailures(true)
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
-jacocoTestReport {
-    dependsOn test
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.8
-            }
-        }
-    }
-}
+group = 'edu.depail.se433'
+version = '0.0.1-SNAPSHOT'
+description = 'shopping-app'
+sourceCompatibility = 1.11
 
 repositories {
     mavenLocal()
@@ -40,27 +25,46 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.3.0.RELEASE'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
+    testImplementation 'io.cucumber:cucumber-java:6.8.1'
+    testImplementation "io.cucumber:cucumber-junit:6.8.1"
 }
-
-group = 'edu.depail.se433'
-version = '0.0.1-SNAPSHOT'
-description = 'shopping-app'
-sourceCompatibility = '11'
 
 def user = 'bboris1'
 
-bootJar {
-    mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
+task cukesTest(type: Test) {
+    include "edu/depaul/se433/shoppingapp/TestRunner*"
 }
 
-def test = tasks.named("test") {
-    afterTest { desc, result ->
-        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
     }
 }
 
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--glue', "edu/depaul/se433/shoppingapp", 'src/test/resources']
+        }
+    }
+}
+
+test {
+    dependsOn cukesTest
+    useJUnitPlatform()
+    ignoreFailures(true)
+    afterTest { desc, result ->
+        logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+    finalizedBy cucumber
+//    finalizedBy cucumber, jacocoTestReport
+}
+
 task packageDistribution(type: Zip) {
-    dependsOn test
+    dependsOn check
     archiveFileName = "${user}-${rootProject.name}.zip"
     destinationDirectory = file("$buildDir/dist")
 
@@ -76,8 +80,26 @@ task packageDistribution(type: Zip) {
 }
 
 check {
-    dependsOn {
-        jacocoTestCoverageVerification
-    }
+//    dependsOn {
+//        jacocoTestCoverageVerification
+//    }
     finalizedBy packageDistribution
+}
+
+//jacocoTestReport {
+//    dependsOn test
+//}
+
+//jacocoTestCoverageVerification {
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 0.8
+//            }
+//        }
+//    }
+//}
+
+bootJar {
+    mainClassName = 'edu.depaul.se433.shoppingapp.ShoppingAppApplication'
 }

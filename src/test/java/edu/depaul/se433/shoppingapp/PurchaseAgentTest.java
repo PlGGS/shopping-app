@@ -28,15 +28,13 @@ import org.junit.jupiter.api.Test;
  * Fulfill the assignment by adding tests to this class
  */
 class PurchaseAgentTest {
-    private double shirtCost = 15.99;
-
     @Test
     @DisplayName("Makes sure that PurchaseAgent.averagePurchases() actually takes into account every purchase made through its PurchaseDBO")
     void calculatesAveragePurchases() {
         List<Purchase> purchaseList = Arrays.asList(
-            Purchase.make("Shirt", LocalDate.of(2000, 4, 4), shirtCost, "IL", "STANDARD"),
-            Purchase.make("Shirts", LocalDate.of(2000, 4, 4), shirtCost, "IL", "STANDARD"),
-            Purchase.make("Fancy Shirt", LocalDate.of(2000, 4, 4), shirtCost, "IL", "STANDARD")
+            Purchase.make("Shirt", LocalDate.of(2000, 4, 4), TotalCostCalculatorTest.shirtPrice, "IL", "STANDARD"),
+            Purchase.make("Shirts", LocalDate.of(2000, 4, 4), TotalCostCalculatorTest.shirtPrice, "IL", "STANDARD"),
+            Purchase.make("Fancy Shirt", LocalDate.of(2000, 4, 4), TotalCostCalculatorTest.shirtPrice, "IL", "STANDARD")
         );
 
         PurchaseDBO mockDBO = mock(PurchaseDBO.class);
@@ -66,7 +64,7 @@ class PurchaseAgentTest {
     //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
 
     @Test
-    @DisplayName("Makes sure that PurchaseAgent properly calls its own getPurchases() function to catch JbdiExceptions thrown by its PurchaseDBO.getPurchases() function")
+    @DisplayName("Makes sure that PurchaseAgent properly calls its own getPurchases() function to catch JbdiExceptions thrown by its PurchaseDBO's getPurchases() function")
     void handlesJbdiException() {
         List<Purchase> purchaseList = new ArrayList<>();
 
