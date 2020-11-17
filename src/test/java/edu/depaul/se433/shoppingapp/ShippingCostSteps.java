@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ShippingCostSteps {
   private static Map<String, String>  stateAbbreviations = new HashMap<>();
@@ -41,19 +40,19 @@ public class ShippingCostSteps {
   }
 
   @And("The customer lives in {string}")
-  public void the_driver_was_going_miles_per_hour(String state) {
+  public void the_customer_lives_in_s(String state) {
     this.stateAbbreviation = stateAbbreviations.get(state);
   }
 
   @And("The customer chose {string} shipping")
-  public void theDriverHasId(String type) {
+  public void the_customer_chose_s_shipping(String type) {
     //Lets the tester enter any form of "STANDARD" or "NEXT_DAY" into Cucumber and get the price of ShippingType.NEXT_DAY
     //Ex. "Standard", "standard", "NEXTDAY", "NextDay", "nextday", "NEXT-DAY", "Next-Day", "next-day", "NEXT DAY", "Next Day", "next day", "Next_Day", "next_day"
     this.shippingType = ShippingType.valueOf(type.toUpperCase().replace(' ', '_').replace('-', '_').replace("TD", "T_D"));
   }
 
   @Then("The total is ${double} with ${double} shipping and ${double} in tax")
-  public void the_fine_is_dollars(double expectedTotal, double expectedShipping, double expectedTax) {
+  public void the_fine_is_d_dollars_with_d_shipping_and_d_dollars_in_tax(double expectedTotal, double expectedShipping, double expectedTax) {
     this.expectedTotal = Precision.round(expectedTotal, 2);
     this.expectedShipping = Precision.round(expectedTotal, 2);
     this.expectedTax = Precision.round(expectedTotal, 2);

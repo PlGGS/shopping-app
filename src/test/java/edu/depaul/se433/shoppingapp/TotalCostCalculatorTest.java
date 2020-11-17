@@ -96,7 +96,7 @@ public class TotalCostCalculatorTest {
   }
 
   @Test
-  @DisplayName("Makes sure that carts with distinct, separate items have the proper count")
+  @DisplayName("Makes sure that ShoppingCart.clear() properly clears its list of PurchaseItems within")
   void clearsItems() {
     ShoppingCart cart = new ShoppingCart();
     cart.addItem(new PurchaseItem("Shirt", shirtPrice, 1));
@@ -105,6 +105,21 @@ public class TotalCostCalculatorTest {
     assertEquals(cart.itemCount(), 2);
     cart.clear();
     assertEquals(cart.itemCount(), 0);
+  }
+
+  @Test
+  @DisplayName("Makes sure that invalid states throw some sort of exception")
+  void invalidNullStates() {
+    ShoppingCart cart = new ShoppingCart();
+    PurchaseItem shirt = new PurchaseItem("Shirt", shirtPrice, 1);
+    cart.addItem(shirt);
+
+    assertAll(
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(cart, null, ShippingType.STANDARD)),
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(cart, null, ShippingType.NEXT_DAY)),
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirt.getUnitPrice(), null, ShippingType.STANDARD)),
+      () -> assertThrows(Exception.class, () -> TotalCostCalculator.calculate(shirt.getUnitPrice(), null, ShippingType.NEXT_DAY))
+    );
   }
 
   //ALL TESTS BELOW SHOULD FAIL BECAUSE THE PROGRAM DOESN'T HANDLE THEM PROPERLY
@@ -159,7 +174,7 @@ public class TotalCostCalculatorTest {
 
   @Test
   @DisplayName("Makes sure that invalid states throw some sort of exception")
-  void invalidStates() {
+  void invalidNonNullStates() {
     ShoppingCart cart = new ShoppingCart();
     PurchaseItem shirt = new PurchaseItem("Shirt", shirtPrice, 1);
     cart.addItem(shirt);
