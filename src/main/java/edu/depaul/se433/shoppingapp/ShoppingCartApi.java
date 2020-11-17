@@ -53,7 +53,6 @@ public class ShoppingCartApi {
   public String addItem(@RequestBody PurchaseItem newItem) {
     shoppingCart.addItem(newItem);
 
-    System.out.println(newItem);
     return "Cart contains " + shoppingCart.itemCount() + " items";
   }
 
